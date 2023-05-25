@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { Provider, connect } from "react-redux";
 // @mui
 import { styled } from '@mui/material/styles';
 import { Link, Container, Typography, Divider, Stack, Button } from '@mui/material';
@@ -40,9 +41,9 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function LoginPage() { 
+function LoginPage(props) { 
   const mdUp = useResponsive('up', 'md');
-
+console.log(props)
   return (
     <>
       <Helmet>
@@ -105,3 +106,10 @@ export default function LoginPage() {
     </>
   );
 }
+const mapState = (state) => ({
+  auth: state.auth,
+});
+const mapDispatch = (dispatch) => ({
+   
+});
+export default connect(mapState, mapDispatch)(LoginPage)
