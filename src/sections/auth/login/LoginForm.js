@@ -6,25 +6,44 @@ import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
 
+import {  toast } from 'react-toastify';
+import { saveCookie, loadCookie } from "src/utils/cookies";
+import {LOGIN_TOKEN} from "src/utils/setting"
 // ----------------------------------------------------------------------
 
-export default function LoginForm() {
+export default function LoginForm(props) {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleClick = () => {
-    navigate('/dashboard', { replace: true });
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const handleClick = async() => {
+    const resLogin = await props.login({
+      username: username,
+      password: password,
+    });
+    console.log(resLogin)
+    if(resLogin.code === 1)  {
+      console.log(resLogin.data?.access_token)
+      saveCookie({
+        name: LOGIN_TOKEN,
+        data: resLogin.data?.access_token,
+      });
+      navigate('/dashboard', { replace: true });
+    }
+    else toast(resLogin.error);
   };
 
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+        <TextField name="email" label="Email address" value={username} onChange={(e) => setUsername(e.target.value)}/>
 
         <TextField
           name="password"
           label="Password"
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)}
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -39,7 +58,7 @@ export default function LoginForm() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Checkbox name="remember" label="Remember me" />
+        {/* <Checkbox name="remember" label="Remember me" /> */}
         <Link variant="subtitle2" underline="hover">
           Forgot password?
         </Link>
