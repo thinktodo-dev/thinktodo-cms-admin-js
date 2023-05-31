@@ -1,6 +1,6 @@
 import Cookies from 'universal-cookie';  
 const cookie = new Cookies();
-const EXPIRES_IN = 1000 * 60 * 60 * 24 * 7; // 7 days
+const EXPIRES_IN = 1000 * 60 * 60 * 0.5 ; // 7 days
 
 export const saveCookie = ({
   name,

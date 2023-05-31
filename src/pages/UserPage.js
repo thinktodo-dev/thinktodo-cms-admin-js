@@ -29,6 +29,7 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +73,10 @@ function applySortFilter(array, comparator, query) {
 }
 
 function UserPage(props) {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(null);
+
+  const [itemSelected, setItemSelected] = useState(null);
 
   const [page, setPage] = useState(0);
 
@@ -86,12 +90,14 @@ function UserPage(props) {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleOpenMenu = (event) => {
+  const handleOpenMenu = (event, id) => {
     setOpen(event.currentTarget);
+    setItemSelected(id)
   };
 
   const handleCloseMenu = () => {
     setOpen(null);
+    setItemSelected(null);
   };
 
   const handleRequestSort = (event, property) => {
@@ -138,14 +144,24 @@ function UserPage(props) {
     setFilterName(event.target.value);
   };
 
+  const handleEditUser = () => {
+    navigate(`/dashboard/user/${itemSelected}`)
+  }
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
   useEffect(() => {
-    props.getListAdmin();
-  }, []);
+    props.getListAdmin({
+      page: page + 1,
+      limit: rowsPerPage
+    });
+  }, [rowsPerPage, page]);
+  const handleRedirectUserForm = () => {
+    console.log("bavifga"); 
+    navigate("/dashboard/user/create")
+  }
   console.log(props.listAdmin)
   return (
     <>
@@ -158,7 +174,7 @@ function UserPage(props) {
           <Typography variant="h4" gutterBottom>
             User
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill"/>} onClick={handleRedirectUserForm}>
             New User
           </Button>
         </Stack>
@@ -179,9 +195,9 @@ function UserPage(props) {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {props.listAdmin.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  {props.listAdmin.map((row) => {
                     const { id, email, name, role_code,  username } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+                    const selectedUser = selected.indexOf(id) !== -1;
 
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
@@ -209,7 +225,7 @@ function UserPage(props) {
                         </TableCell> */}
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                          <IconButton size="large" color="inherit" onClick={(e) => handleOpenMenu(e, id)}>
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -253,7 +269,7 @@ function UserPage(props) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={props.total}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -280,15 +296,15 @@ function UserPage(props) {
           },
         }}
       >
-        <MenuItem>
+        <MenuItem onClick={handleEditUser}>
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Edit
         </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }}>
+        {/* <MenuItem  onClick={handleDeleteUser} sx={{ color: 'error.main' }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
-        </MenuItem>
+        </MenuItem> */}
       </Popover>
     </>
   );
@@ -296,6 +312,7 @@ function UserPage(props) {
 
 const mapState = (state) => ({
   listAdmin: state.users.listAdmin,
+  total: state.users.total,
 });
 const mapDispatch = (dispatch) => ({
   getListAdmin: dispatch.users.getListAdmin
