@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -6,6 +6,9 @@ import { styled } from '@mui/material/styles';
 import Header from './header';
 import Nav from './nav';
 
+import { LOGIN_TOKEN} from "src/utils/setting"
+import {   loadCookie } from "src/utils/cookies";
+import { useNavigate } from 'react-router-dom';
 // ----------------------------------------------------------------------
 
 const APP_BAR_MOBILE = 64;
@@ -34,7 +37,11 @@ const Main = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
-
+  const navigate = useNavigate();
+  useEffect(() => {
+      const tokenLogin = loadCookie(LOGIN_TOKEN)
+      if(!tokenLogin) navigate("/login");
+  }, [navigate]);
   return (
     <StyledRoot>
       <Header onOpenNav={() => setOpen(true)} />

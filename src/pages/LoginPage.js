@@ -1,13 +1,13 @@
 import { Helmet } from 'react-helmet-async';
-import { Provider, connect } from "react-redux";
+import {  connect } from "react-redux";
 // @mui
 import { styled } from '@mui/material/styles';
-import { Link, Container, Typography, Divider, Stack, Button } from '@mui/material';
+import { Link, Container, Typography  } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
 import Logo from '../components/logo';
-import Iconify from '../components/iconify';
+// import Iconify from '../components/iconify';
 
 // sections
 import { LoginForm } from '../sections/auth/login';
@@ -44,7 +44,6 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 function LoginPage(props) { 
   const mdUp = useResponsive('up', 'md');
-console.log(props)
   return (
     <>
       <Helmet>

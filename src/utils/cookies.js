@@ -13,11 +13,11 @@ export const saveCookie = ({
   });
 };
 
-export const loadCookie = (name: any) => {
+export const loadCookie = (name) => {
   const result = cookie.get(name);
   return typeof result !== "undefined" ? result : false;
 };
-export const removeCookie = (name: any) => {
+export const removeCookie = (name) => {
   cookie.remove(name,{
   path: "/"
 });
