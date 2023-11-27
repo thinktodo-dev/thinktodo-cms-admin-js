@@ -23,8 +23,8 @@ const users = {
               Authorization: `Bearer ${loadCookie(LOGIN_TOKEN)}`
             }
           }); 
-          dispatch.users.setState({listAdmin: result?.data?.items})
-          dispatch.users.setState({total: result?.data?.meta?.totalItems})
+          this.setState({listAdmin: result?.data?.items})
+          this.setState({total: result?.data?.meta?.totalItems})
           return {
             code: 1,
             error: null,
@@ -77,7 +77,6 @@ const users = {
       },
       async updateUser(payload, rootState) {
         try {
-          console.log("payload", payload)
           let result = await axios.put(`${API_URL}super-admin/${payload?.id}`, {
             ...payload
           },{

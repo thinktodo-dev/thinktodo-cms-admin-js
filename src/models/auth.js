@@ -13,14 +13,14 @@ const auth = {
       // use async/await for async actions
       async login(payload, rootState) {
         try {
-          let result = await axios.post(`${API_URL}auth/login`, {
-            username: payload.username,
-            password: payload.password,
-          }); 
+          // let result = await axios.post(`${API_URL}auth/login`, {
+          //   username: payload.username,
+          //   password: payload.password,
+          // }); 
           return {
             code: 1,
             error: null,
-            data: result?.data,
+            // data: result?.data,
           }
         } catch(error) {
           return {

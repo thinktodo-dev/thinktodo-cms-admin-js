@@ -23,10 +23,10 @@ import {
   TablePagination,
 } from '@mui/material';
 // components
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
+import Iconify from 'src/components/iconify';
+import Scrollbar from 'src/components/scrollbar';
 // sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserListHead, UserListToolbar } from 'src/sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
 import { useNavigate } from 'react-router-dom';
@@ -108,7 +108,7 @@ function UserPage(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = props.listAdmin.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -147,9 +147,9 @@ function UserPage(props) {
   const handleEditUser = () => {
     navigate(`/dashboard/user/${itemSelected}`)
   }
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.listAdmin.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(props.listAdmin, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
   useEffect(() => {
@@ -166,7 +166,7 @@ function UserPage(props) {
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> User | Admin UI </title>
       </Helmet>
 
       <Container>
@@ -193,6 +193,7 @@ function UserPage(props) {
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
+                  hideCheckBox={true}
                 />
                 <TableBody>
                   {props.listAdmin.map((row) => {
@@ -201,11 +202,11 @@ function UserPage(props) {
 
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
-                        </TableCell>
+                        {/* <TableCell padding="checkbox">
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, id)} />
+                        </TableCell> */}
 
-                        <TableCell component="th" scope="row" padding="none">
+                        <TableCell component="th" scope="row" padding="16">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Avatar alt={name} src={""} />
                             <Typography variant="subtitle2" noWrap>

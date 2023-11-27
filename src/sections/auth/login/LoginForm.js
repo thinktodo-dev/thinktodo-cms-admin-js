@@ -37,7 +37,7 @@ export default function LoginForm(props) {
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" value={username} onChange={(e) => setUsername(e.target.value)}/>
+        <TextField name="email" label="Email address" InputLabelProps={{ shrink: true }} value={username} onChange={(e) => setUsername(e.target.value)}/>
 
         <TextField
           name="password"
@@ -45,6 +45,7 @@ export default function LoginForm(props) {
           value={password} 
           onChange={(e) => setPassword(e.target.value)}
           type={showPassword ? 'text' : 'password'}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

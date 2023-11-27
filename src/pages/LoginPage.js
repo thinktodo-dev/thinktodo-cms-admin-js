@@ -6,11 +6,11 @@ import { Link, Container, Typography  } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
-import Logo from '../components/logo';
-// import Iconify from '../components/iconify';
+import Logo from 'src/components/logo';
+// import Iconify from 'src/components/iconify';
 
 // sections
-import { LoginForm } from '../sections/auth/login';
+import { LoginForm } from 'src/sections/auth/login';
 
 // ----------------------------------------------------------------------
 
@@ -47,7 +47,7 @@ function LoginPage(props) {
   return (
     <>
       <Helmet>
-        <title> Login | Minimal UI </title>
+        <title> Login | Admin UI </title>
       </Helmet>
 
       <StyledRoot>
@@ -71,7 +71,7 @@ function LoginPage(props) {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-              Sign in to Minimal
+              Sign in to Admin
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
